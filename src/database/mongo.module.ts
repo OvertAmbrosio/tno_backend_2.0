@@ -12,6 +12,7 @@ import { variables } from '../config';
         uri: configService.get(variables.db_uri),
         useUnifiedTopology: true,
         useNewUrlParser: true,
+        useCreateIndex: true
       }),
       inject: [ConfigService],
     })

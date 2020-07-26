@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { WinstonModule } from 'nest-winston';
+import createLogger from './config/createLogger'
 import { MongoModule } from './database/mongo.module';
 import { ApiModule } from './api/api.module';
 import { AuthModule } from './auth/auth.module';
@@ -10,6 +12,7 @@ import { AuthController } from './auth/auth.controller';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    WinstonModule.forRoot(createLogger),
     ApiModule,
     MongoModule,
     AuthModule,

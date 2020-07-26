@@ -9,7 +9,7 @@ import { PassportModule } from '@nestjs/passport';
 @Module({
   imports: [
     MongooseModule.forFeature([{
-      name: 'Novels',
+      name: 'Novel',
       schema: NovelSchema
     }], variables.db_name),
     PassportModule
