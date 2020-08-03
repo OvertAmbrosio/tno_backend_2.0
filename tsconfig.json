@@ -10,6 +10,14 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "incremental": true
+    "incremental": true,
+    "paths": {
+      "@app/aws-client": [
+        "libs/aws-client/src"
+      ],
+      "@app/aws-client/*": [
+        "libs/aws-client/src/*"
+      ]
+    }
   }
 }

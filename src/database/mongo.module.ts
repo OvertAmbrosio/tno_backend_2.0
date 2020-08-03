@@ -9,10 +9,13 @@ import { variables } from '../config';
     MongooseModule.forRootAsync({
       connectionName: variables.db_name, // Database name
       useFactory: (configService: ConfigService) => ({
-        uri: configService.get(variables.db_uri),
+        uri: configService.get('NODE_ENV') === 'production' ? 
+          configService.get(variables.db_uri_prod) : configService.get(variables.db_uri_dev)
+        ,
         useUnifiedTopology: true,
         useNewUrlParser: true,
-        useCreateIndex: true
+        useCreateIndex: true,
+        useFindAndModify: false,
       }),
       inject: [ConfigService],
     })

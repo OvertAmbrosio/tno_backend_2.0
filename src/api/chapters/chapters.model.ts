@@ -1,4 +1,5 @@
 import { Schema, Types } from 'mongoose';
+import * as mongoosePaginate from 'mongoose-paginate-v2';
 
 export const ChapterSchema = new Schema({
   titulo: {
@@ -13,7 +14,8 @@ export const ChapterSchema = new Schema({
   },
   novela: {
     type: Types.ObjectId,
-    ref: 'Novel'
+    ref: 'Novel',
+    required: true,
   },
   slug: {
     type: String,
@@ -22,25 +24,38 @@ export const ChapterSchema = new Schema({
     required: true,
     default: 'capitulo-x'
   },
-  contenido: {
-    cuerpo: {
-      type: String,
-      default: '-'
-    },
-    traductor: {
-      type: Types.ObjectId,
-      ref: 'Group',
-    },
-    editor: {
-      type: Types.ObjectId,
-      ref: 'Group'
-    },
-    nota: {
-      type: String,
-      trim: true,
-      default: null
-    }
+  cuerpo: {
+    type: String,
+    default: '-'
+  },
+  traductor: {
+    type: Types.ObjectId,
+    ref: 'Group',
+    default: null,
+  },
+  editor: {
+    type: Types.ObjectId,
+    ref: 'Group',
+    default: null
+  },
+  nota: {
+    type: String,
+    trim: true,
+    default: null
+  },
+  //sistema
+  subidoPor: {
+    type: Types.ObjectId,
+    ref: 'Admin',
+    default: null
+  },
+  actualizadoPor: {
+    type: Types.ObjectId,
+    ref: 'Admin',
+    default: null
   }
 },{ 
   timestamps: true
-})
+});
+
+ChapterSchema.plugin(mongoosePaginate);

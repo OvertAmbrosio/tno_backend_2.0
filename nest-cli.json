@@ -1,4 +1,18 @@
 {
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src"
+  "sourceRoot": "src",
+  "projects": {
+    "aws-client": {
+      "type": "library",
+      "root": "libs/aws-client",
+      "entryFile": "index",
+      "sourceRoot": "libs/aws-client/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/aws-client/tsconfig.lib.json"
+      }
+    }
+  },
+  "compilerOptions": {
+    "webpack": true
+  }
 }

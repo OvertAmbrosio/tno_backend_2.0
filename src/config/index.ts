@@ -1,1 +1,1 @@
-export { variables } from './variables';
+export { variables, cacheKey } from './variables';

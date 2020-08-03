@@ -1,4 +1,5 @@
 import { Schema, Types } from 'mongoose';
+import * as mongoosePaginate from 'mongoose-paginate-v2'
 
 export const NovelSchema = new Schema({
   //datos descripcion de la novela
@@ -24,23 +25,24 @@ export const NovelSchema = new Schema({
     required: true,
     unique: true,
     lowercase: true,
-    default: '-'
   },
   acron: {
     type: String,
     trim: true,
     uppercase: true,
+    required: true,
     default: '-'
   },
   autor: {
     nombre: {// nombre del autor
       type: String,
       trim: true,
-      default: '-'
+      default: null
     },
     usuario: {
       type: Types.ObjectId,
-      ref: 'User'
+      ref: 'User',
+      default: null,
     }
   },
   sinopsis: {
@@ -49,42 +51,51 @@ export const NovelSchema = new Schema({
     default: 'Sin sinopsis.'
   },
   //datos complementarios
-  estado: {//emision, finalizado, cancelado, pendiente (de aprobacion)
+  estado: {//emision, finalizado, cancelado
     type: String,
     lowercase: true,
     trim: true,
     required: true,
-    default: 'pendiente'
+    default: 'emision'
   },
   tipo: {
     type: Types.ObjectId,
-    ref: 'Type'
+    ref: 'Extra',
+    required: true
   },
   categorias: [{
     type: Types.ObjectId,
-    ref: 'Category'
+    ref: 'Extra'
   }],
   etiquetas: [{
     type: Types.ObjectId,
-    ref: 'Tag'
+    ref: 'Extra'
   }],
   imagen_portada: {
-    type: Types.ObjectId,
-    ref: 'Image'
+    url: {
+      type: String,
+      default: null
+    },
+    tipo: {
+      type: String,
+      default: null
+    },
   },
   imagen_mini: {
-    type: Types.ObjectId,
-    ref: 'Image'
+    url: {
+      type: String,
+      default: null
+    },
+    tipo: {
+      type: String,
+      default: null
+    },
   },
-  imagen_wallpaper: [{
-    type: Types.ObjectId,
-    ref: 'Image'
-  }],
   capitulo_emision: {
     type: Types.ObjectId,
     ref: 'Chapter'
   },
-  subidoPor: {
+  enviadoPor: {
     type: Types.ObjectId,
     ref: 'Group'
   },
@@ -100,7 +111,11 @@ export const NovelSchema = new Schema({
     }
   },
   //variables de sistema
-  aprobadoPor: {
+  subidoPor: {
+    type: Types.ObjectId,
+    ref: 'Admin'
+  },
+  actualizadoPor: {
     type: Types.ObjectId,
     ref: 'Admin'
   },
@@ -114,3 +129,5 @@ export const NovelSchema = new Schema({
 {
   timestamps: true,
 });
+
+NovelSchema.plugin(mongoosePaginate);

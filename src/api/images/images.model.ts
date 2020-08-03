@@ -1,10 +1,12 @@
 import { Schema, Types } from 'mongoose';
+import * as mongoosePaginate from 'mongoose-paginate-v2';
 
-export const ChapterSchema = new Schema({
+export const ImageSchema = new Schema({
   titulo: {
     type: String,
     trim: true,
-    default: '-'
+    unique: true,
+    require: true
   },
   tipo: {//portada, miniatura, wallpaper
     type: String,
@@ -26,10 +28,25 @@ export const ChapterSchema = new Schema({
     type: String,
     trim: true,
     required: true,
-    default: null
+    unique: true
   },
   novela: {
     type: Types.ObjectId,
     ref: 'Novel'
+  },
+  //sistema
+  subidoPor: {
+    type: Types.ObjectId,
+    ref: 'Admin',
+    default: null
+  },
+  actualizadoPor: {
+    type: Types.ObjectId,
+    ref: 'Admin',
+    default: null
   }
-})
+},{
+  timestamps: true
+});
+
+ImageSchema.plugin(mongoosePaginate);

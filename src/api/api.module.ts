@@ -1,13 +1,10 @@
 import { Module } from '@nestjs/common';
 import { NovelsModule } from './novels/novels.module';
 import { ChaptersModule } from './chapters/chapters.module';
-import { ImagesController } from './images/images.controller';
-import { ImagesService } from './images/images.service';
 import { ImagesModule } from './images/images.module';
+import { ExtrasModule } from './extras/extras.module';
 
 @Module({
-  imports: [NovelsModule, ChaptersModule, ImagesModule],
-  controllers: [ImagesController],
-  providers: [ImagesService]
+  imports: [NovelsModule, ChaptersModule, ImagesModule, ExtrasModule]
 })
 export class ApiModule {}
