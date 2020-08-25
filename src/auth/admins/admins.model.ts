@@ -3,15 +3,19 @@ import { Schema } from "mongoose";
 export const AuthAdminSchema = new Schema({
   username: {
     type: String,
-    required: true
+    required: true,
+    unique: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
-  client: {
+  status: {//activo / inactivo
     type: String,
-    required: true
+    lowercase: true,
+    trim: true,
+    required: true,
+    default: 'activo'
   }
 }, {
   timestamps: true

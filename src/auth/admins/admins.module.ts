@@ -8,7 +8,7 @@ import { PassportModule } from '@nestjs/passport';
 @Module({
   imports: [
     MongooseModule.forFeature([{
-      name: 'admins',
+      name: 'Admin',
       schema: AuthAdminSchema
     }], variables.db_name),
     PassportModule

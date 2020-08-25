@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import * as AWS from 'aws-sdk';
 import * as slug from 'slug';
 import { variables } from 'src/config';
-import { FileDTO, ImageDTO } from 'src/api/images/images.interface';
+import { FileDTO, ImageDTO } from 'src/private/images/images.interface';
 
 @Injectable()
 export class AwsClientService {
