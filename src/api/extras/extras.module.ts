@@ -5,6 +5,7 @@ import { PassportModule } from '@nestjs/passport';
 import { ExtrasService } from './extras.service';
 import { ExtrasController } from './extras.controller';
 import { ExtraSchema } from './extras.model';
+import { ExtrasResolver } from './extras.resolver'
 
 import { variables } from 'src/config';
 
@@ -18,7 +19,7 @@ import { variables } from 'src/config';
     }], variables.db_name),
     PassportModule
   ],
-  providers: [ExtrasService],
+  providers: [ExtrasResolver, ExtrasService],
   controllers: [ExtrasController]
 })
 export class ExtrasModule {}

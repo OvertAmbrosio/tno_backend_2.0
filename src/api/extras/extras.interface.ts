@@ -1,6 +1,5 @@
 import { Document } from "mongoose";
 import { IsNumber, IsNotEmpty } from 'class-validator';
-import { ObjectType, Field, Int, ID } from 'type-graphql';
 
 export interface IExtra extends Document {
   readonly nombre: string,
@@ -9,12 +8,6 @@ export interface IExtra extends Document {
   readonly descripcion?: string
 };
 
-@ObjectType()
-export class ExtraType {
-  @Field(() =>)
-}
-
-@ObjectType()
 export class ExtraDTO {
   @IsNotEmpty()
   readonly nombre: string;

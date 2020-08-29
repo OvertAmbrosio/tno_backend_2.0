@@ -1,4 +1,4 @@
-import { IsNumber, IsNotEmpty } from 'class-validator'
+import { IsNumber, IsNotEmpty } from 'class-validator';
 
 export class CreateChapterDTO {
   @IsNotEmpty()
@@ -17,7 +17,7 @@ export class CreateChapterDTO {
   readonly editor?: string;
   readonly nota?: string;
   //sistema
-  subidoPor: string;
+  subidoPor?: string;
 }
 
 export class UpdateChapterDTO {

@@ -1,17 +1,14 @@
-import { Controller, Post, UseInterceptors, UseGuards, Req, Get, Headers, Res } from '@nestjs/common';
+import { Controller, Post, UseGuards, Req, Get, Headers, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { RateLimit, RateLimiterInterceptor } from 'nestjs-rate-limiter';
 import { IAdmin } from './admins/admins.interface';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { Request, Response } from 'express';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Controller('private/auth')
-@UseInterceptors(RateLimiterInterceptor)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @RateLimit({ points: 3, duration: 3600 })
   @UseGuards(LocalAuthGuard)
   @Post('login')
   private async login(@Req() req: Request) {
