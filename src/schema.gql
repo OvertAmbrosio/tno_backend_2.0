@@ -26,6 +26,18 @@ type ExtraType {
   descripcion: String!
 }
 
+type ChapterType {
+  _id: ID!
+  titulo: String!
+  numero: Float!
+  novela: NovelType!
+  slug: String!
+  cuerpo: String!
+  traductor: String!
+  editor: String!
+  nota: String!
+}
+
 type NovelType {
   _id: ID!
   activo: Boolean!
@@ -45,21 +57,16 @@ type NovelType {
   rating: RatingNovel!
 }
 
-type ChapterType {
-  _id: ID!
+type ImageType {
   titulo: String!
-  numero: Float!
+  tipo: String!
+  contentType: String!
+  url: String!
   novela: NovelType!
-  slug: String!
-  cuerpo: String!
-  traductor: String!
-  editor: String!
-  nota: String!
 }
 
 type Query {
   extras: [ExtraType!]!
-  lastChapters(limit: Int = 100): [ChapterType!]!
   getNovelRecomended: [NovelType!]!
   getNewNovels: [NovelType!]!
   getRankingListNovels(global: Boolean = false): [NovelType!]!
@@ -67,4 +74,9 @@ type Query {
   getListCategoryNovel(tipo: String!, estado: String!, categoria: String!, limit: Int = 25): [NovelType!]!
   findNovelTitle(titulo: String!): [NovelType!]!
   findNovel(slug: String!): [NovelType!]!
+  lastChapters(limit: Int = 100): [ChapterType!]!
+  novelChapters(novela: String!): [ChapterType!]!
+  getChapter(capitulo: String!, novela: String!): [ChapterType!]!
+  getNavChapter(next: Boolean!, numero: Float!, novela: String!): [ChapterType!]!
+  getImagesNovel(novela: String!): [ImageType!]!
 }
