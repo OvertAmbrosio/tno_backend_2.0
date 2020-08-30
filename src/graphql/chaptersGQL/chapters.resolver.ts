@@ -1,24 +1,13 @@
-import { NotFoundException } from '@nestjs/common';
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Query, Resolver, Int } from '@nestjs/graphql';
 import { ChaptersService } from './chapters.service';
 import { ChapterType } from './chapters.type';
 
 @Resolver()
 export class ChaptersResolver {
   constructor(private readonly charptersService: ChaptersService) {}
-
+  //consulta que trae los ultimos 100(?) capitulos agregados y ordenados por fecha de actualizacion
   @Query(() => [ChapterType])
-  async lastChapters(@Args('limit') limit:number):Promise<ChapterType[]> {
-    const limite = limit === 0 || limit === NaN ? 100 : limit;
-    return await this.charptersService.getChapters(limite);
-  }
-
-  // @Query(returns => Recipe)
-  // async recipe(@Args('id') id: string): Promise<Recipe> {
-  //   const recipe = await this.recipesService.findOneById(id);
-  //   if (!recipe) {
-  //     throw new NotFoundException(id);
-  //   }
-  //   return recipe;
-  // }
+  async lastChapters(@Args('limit', { type: () => Int, defaultValue: 100 }) limit?:number):Promise<ChapterType[]> {
+    return await this.charptersService.getChapters(limit);
+  };
 }

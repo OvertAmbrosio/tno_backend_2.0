@@ -1,5 +1,5 @@
-import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
-import { NovelType } from '../novels/novels.type';
+import { ObjectType, Field, ID, Float } from '@nestjs/graphql';
+import { NovelType } from '../novelsGQL/novels.type';
 
 @ObjectType()
 export class ChapterType {
@@ -7,7 +7,7 @@ export class ChapterType {
   readonly _id: string;
   @Field()
   readonly titulo: string;
-  @Field(() => Int)
+  @Field(() => Float)
   readonly numero: number;
   @Field(() => NovelType)
   readonly novela: NovelType;

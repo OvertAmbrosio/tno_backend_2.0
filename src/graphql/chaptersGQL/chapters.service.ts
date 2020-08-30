@@ -15,7 +15,8 @@ export class ChaptersService {
     return await this.chapterModel.find()
       .sort('-updatedAt')
       .limit(limit)
-      .populate('novela')
+      .populate('novela', 'titulo')
+      .select('titulo capitulo numero updatedAt createdAt')
       .exec();
   };
   //

@@ -1,7 +1,7 @@
-import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
+import { ObjectType, InterfaceType, Field, Int, Float, ID, } from '@nestjs/graphql';
 import { ChapterType } from '../chaptersGQL/chapters.type';
 
-@ObjectType()
+@InterfaceType()
 class ImageNovel {
   @Field()
   readonly url: string;
@@ -9,13 +9,13 @@ class ImageNovel {
   readonly tipo: string;
 };
 
-@ObjectType()
+@InterfaceType()
 class RatingNovel {
   @Field(() => Int)
   readonly contador: number;
   @Field(() => Int)
   readonly valor: number;
-  @Field(() => Int)
+  @Field(() => Float)
   readonly promedio: number;
   @Field(() => Date)
   readonly actualizado: Date;
@@ -30,7 +30,7 @@ export class NovelType {
   @Field()
   readonly titulo: string;
   @Field()
-  readonly titulo_alt: string;
+  readonly titulo_alt?: string;
   @Field()
   readonly slug: string;
   @Field()
@@ -46,17 +46,17 @@ export class NovelType {
   @Field()
   readonly tipo: string;
   @Field(() => [String])
-  readonly categorias: Array<string>;
+  readonly categorias?: Array<string>;
   @Field(() => [String])
-  readonly etiquetas: Array<string>;
+  readonly etiquetas?: Array<string>;
   @Field(() => ImageNovel)
   readonly imagen_portada: ImageNovel;
   @Field(() => ImageNovel)
   readonly imagen_miniatura: ImageNovel;
   @Field(() => ChapterType)
-  readonly capitulo_emision: ChapterType;
+  readonly capitulo_emision?: ChapterType;
   // @Field(() => GroupType)
   // readonly enviadoPor: GroupType;
   @Field(() => RatingNovel)
-  readonly rating: RatingNovel;
+  readonly rating?: RatingNovel;
 }
