@@ -15,7 +15,7 @@ export class ChaptersService {
   //listar todos los capitulos para mostrar los ultimos subidos
   public async getChapters(limit:number): Promise<IChapter[]> {
     return await this.chapterModel.find()
-      .sort('-updatedAt')
+      .sort('-createdAt')
       .limit(limit<100?limit:100)
       .populate('novela', 'titulo')
       .select('titulo capitulo numero updatedAt createdAt')

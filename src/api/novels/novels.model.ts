@@ -109,12 +109,18 @@ export const NovelSchema = new Schema({
     },
     promedio: {
       type: Number,
-      default: 5
+      default: 1
     },
     actualizado: {
       type: Date,
       default: Date.now()
     }
+  },
+  //numero de visitas
+  visitas: {
+    type: Number,
+    required: true,
+    default: 0
   },
   //variables de sistema
   subidoPor: {

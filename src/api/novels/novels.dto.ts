@@ -1,15 +1,5 @@
 import { IsNotEmpty, IsIn } from 'class-validator';
 
-type TRating = {
-  readonly contador: number,
-  readonly valor: number
-}
-
-type TImage = {
-  url: string, 
-  tipo: string
-}
-
 export class CreateNovelDTO {
   @IsNotEmpty()
   readonly titulo: string;

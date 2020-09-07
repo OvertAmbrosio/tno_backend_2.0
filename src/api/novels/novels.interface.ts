@@ -31,6 +31,7 @@ export interface INovel extends Document{
   readonly capitulo_emision?: IChapter['_id'],
   readonly enviadoPor?: string,
   readonly rating?: TRating,
+  readonly visitas?: number,
   readonly subidoPor?: string,
   readonly actualizadoPor?: string;
   readonly observacion?: string

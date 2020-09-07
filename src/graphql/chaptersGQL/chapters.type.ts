@@ -21,4 +21,8 @@ export class ChapterType {
   readonly editor: string;
   @Field()
   readonly nota: string;
+  @Field(() => Date)
+  readonly updatedAt?: Date;
+  @Field(() => Date)
+  readonly createdAt?: Date;
 }

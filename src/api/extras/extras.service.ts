@@ -12,7 +12,7 @@ export class ExtrasService {
   ) {}
   //Obtener
   public async getExtras(): Promise<IExtra[]> {
-    return await this.extrasModel.find().select('nombre slug descripcion tipo');
+    return await this.extrasModel.find().sort('nombre').select('nombre slug descripcion tipo');
   };
 
   public async getExtra(tipo: number): Promise<IExtra[]> {

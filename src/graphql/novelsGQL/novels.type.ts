@@ -1,23 +1,23 @@
-import { ObjectType, InterfaceType, Field, Int, Float, ID, } from '@nestjs/graphql';
+import { ObjectType, Field, Int, Float, ID, } from '@nestjs/graphql';
 import { ChapterType } from '../chaptersGQL/chapters.type';
 
-@InterfaceType()
+@ObjectType()
 class ImageNovel {
-  @Field()
+  @Field({ nullable: true })
   readonly url: string;
-  @Field()
+  @Field({ nullable: true })
   readonly tipo: string;
 };
 
-@InterfaceType()
+@ObjectType()
 class RatingNovel {
-  @Field(() => Int)
+  @Field(() => Int, { nullable: true })
   readonly contador: number;
-  @Field(() => Int)
+  @Field(() => Int, { nullable: true })
   readonly valor: number;
-  @Field(() => Float)
+  @Field(() => Float, { nullable: true })
   readonly promedio: number;
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   readonly actualizado: Date;
 }
 
@@ -59,4 +59,8 @@ export class NovelType {
   // readonly enviadoPor: GroupType;
   @Field(() => RatingNovel)
   readonly rating?: RatingNovel;
+  @Field(() => Int)
+  readonly visitas?: number;
+  @Field(() => Date)
+  readonly updatedAt?: Date;
 }
