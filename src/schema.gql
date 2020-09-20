@@ -78,6 +78,7 @@ type Query {
   getListCategoryNovel(tipo: String = null, estado: String = "emision", categoria: String = null, limit: Int = 25): [NovelType!]!
   findNovelTitle(titulo: String!): NovelType!
   findNovel(slug: String!): NovelType!
+  getNovelRelated(slug: String!): [NovelType!]!
   getLastChapters(limit: Int = 16): [ChapterType!]!
   getNovelChapters(novela: String!): [ChapterType!]!
   findChapter(capitulo: String!, novela: String!): ChapterType!

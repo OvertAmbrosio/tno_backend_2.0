@@ -17,13 +17,13 @@ export class ChaptersService {
     return await this.chapterModel.find()
       .sort('-createdAt')
       .limit(limit<100?limit:100)
-      .populate('novela', 'titulo')
-      .select('titulo capitulo numero updatedAt createdAt')
+      .populate('novela', 'titulo slug')
+      .select('titulo numero novela slug updatedAt createdAt')
       .exec();
   };
   //listar los capitulos de la novela segun el slug
   public async getNovelChapters(novela:string): Promise<IChapter[]> {
-    return await this.chapterModel.find({novela}).select('numero titulo createdAt');
+    return await this.chapterModel.find({novela}).select('numero titulo slug createdAt').sort('-numero');
   };
   //listar capitulo
   public async getChapter(novelaSlug:string, capituloSlug: string): Promise<IChapter> {
@@ -38,7 +38,7 @@ export class ChaptersService {
     return await this.chapterModel.find({ 
       $and: [
         {novela},
-        {numero: { $gt: numero}}
+        {numero: { $lt: numero}}
       ]
     }).sort({numero: -1}).limit(1).select('numero titulo slug')
   }
@@ -47,9 +47,9 @@ export class ChaptersService {
     return await this.chapterModel.find({ 
       $and: [
         {novela},
-        {numero: { $lt: numero}}
+        {numero: { $gt: numero}}
       ]
-    }).sort({numero: 1}).limit(1)
+    }).sort({numero: 1}).limit(1).populate('novela', 'acron').select('numero titulo slug')
   }
 
 }

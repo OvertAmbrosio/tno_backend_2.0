@@ -42,9 +42,14 @@ export class NovelsResolver {
   async findNovelTitle(@Args('titulo') titulo: string): Promise<NovelType> {
     return await this.novelsService.getNovelbyText(titulo)
   };
-  //obtener novela por el id
+  //obtener novela por el slug
   @Query(() => NovelType)
   async findNovel(@Args('slug') slug: string): Promise<NovelType> {
     return await this.novelsService.getNovel(slug);
   };
+  //obtener novelas relacionadas 
+  @Query(() => [NovelType])
+  async getNovelRelated(@Args('slug') slug: string): Promise<NovelType[]> {
+    return await this.novelsService.getNovelRelated(slug);
+  }; 
 }

@@ -4,6 +4,9 @@ import { Model } from 'mongoose';
 
 import { INovel } from 'src/api/novels/novels.interface';
 
+function getRandomArbitrary(min:number, max:number):number {
+  return Math.round(Math.random() * (max - min) + min);
+}
 
 @Injectable()
 export class NovelsService {
@@ -24,8 +27,8 @@ export class NovelsService {
       .find({activo: true, estado: 'emision'})
       .sort('-updatedAt')
       .limit(16)
-      .populate('capitulo_emision', 'numero')
-      .select('capitulo_emision imagen_miniatura titulo acron updatedAt')
+      .populate('capitulo_emision', 'numero slug')
+      .select('capitulo_emision imagen_miniatura titulo slug acron updatedAt')
   };
   //listar novelas ranking (global y semanal)
   public async getNovelRanking(global:boolean): Promise<INovel[]> {
@@ -68,6 +71,7 @@ export class NovelsService {
     const novelas = await this.novelModel
                     .find(objQuery)
                     .sort('titulo')
+                    .select('titulo slug autor estado acron categorias sinopsis imagen_portada')
                     .limit(limit < total ? 0:limit);
 
     return novelas
@@ -78,11 +82,24 @@ export class NovelsService {
   };
   //obtener novela
   public async getNovel(slug: string): Promise<INovel> {
-    return await this.novelModel.findOne({slug})
-      .select('imagen_portada titulo acron autor autor_usuario tipo titulo_alt ranking sinopsis categorias capitulo_emision')
-      .populate('capitulo_emision', 'titulo numero createdAt')
-      .then( async(data) => {
-        return await this.novelModel.findByIdAndUpdate(data._id, { $inc: { visitas: 1 }})
-      })
+    return await this.novelModel.findOne({slug}).then( async(data) => 
+      await this.novelModel.findByIdAndUpdate(data._id, { $inc: { visitas: 1 }})
+        .select('imagen_portada titulo acron autor autor_usuario tipo estado titulo_alt rating sinopsis categorias capitulo_emision')
+        .populate('capitulo_emision', 'titulo numero slug createdAt')
+    )
   };
+  //obtener novelas relacionadas 
+  public async getNovelRelated(slug: string): Promise<INovel[]> {
+    return await this.novelModel.findOne({slug}).select('etiquetas').then(async(data) => {
+      if(data.etiquetas && data.etiquetas.length > 0) {
+        const tagRandom = data.etiquetas[getRandomArbitrary(0, (data.etiquetas.length -1))]
+        return await this.novelModel.find({ $and: [
+          {etiquetas: tagRandom},
+          { slug: { $ne: slug} }
+        ]}).limit(4).select('imagen_portada titulo slug');
+      } else {
+        return null
+      }
+    })
+  }
 }
