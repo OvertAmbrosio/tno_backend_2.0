@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int, Float, ID, } from '@nestjs/graphql';
+import { ObjectType, Field, Int, ID, Float } from '@nestjs/graphql';
 import { ChapterType } from '../chaptersGQL/chapters.type';
 
 @ObjectType()
@@ -15,8 +15,6 @@ class RatingNovel {
   readonly contador: number;
   @Field(() => Int, { nullable: true })
   readonly valor: number;
-  @Field(() => Float, { nullable: true })
-  readonly promedio: number;
   @Field(() => Date, { nullable: true })
   readonly actualizado: Date;
 }
@@ -63,4 +61,6 @@ export class NovelType {
   readonly visitas?: number;
   @Field(() => Date)
   readonly updatedAt?: Date;
+  @Field(() => Float)
+  readonly promedio?:number;
 }

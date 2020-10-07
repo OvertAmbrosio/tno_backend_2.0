@@ -101,13 +101,9 @@ export const NovelSchema = new Schema({
   rating: {
     contador: {
       type: Number,
-      default: 0
+      default: 1
     },
     valor: {
-      type: Number,
-      default: 0
-    },
-    promedio: {
       type: Number,
       default: 1
     },

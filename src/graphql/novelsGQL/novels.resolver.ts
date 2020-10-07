@@ -1,4 +1,4 @@
-import { Args, Query, Resolver, Int } from '@nestjs/graphql';
+import { Args, Query, Resolver, Int, Mutation } from '@nestjs/graphql';
 import { NovelsService } from './novels.service';
 import { NovelType } from './novels.type';
 
@@ -52,4 +52,9 @@ export class NovelsResolver {
   async getNovelRelated(@Args('slug') slug: string): Promise<NovelType[]> {
     return await this.novelsService.getNovelRelated(slug);
   }; 
+  //actualizar puntuacion de la novela
+  @Mutation(() => NovelType)
+  async updateRateNovel(@Args('idProvider') idProvider: string, @Args('novela') novela: string, @Args('valor') valor: number): Promise<NovelType> {
+    return await this.novelsService.updateRateNovel(idProvider, novela, valor);
+  };
 }

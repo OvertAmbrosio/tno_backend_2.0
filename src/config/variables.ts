@@ -11,5 +11,6 @@ export const variables = {
 
 export const cacheKey = {
   todoExtras: 'todo_extras',
-  todoNovels: 'todo_novels'
+  todoNovels: 'todo_novels',
+  novelaRecomendada: 'NOVELA_RECOMENDADA'
 }

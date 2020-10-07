@@ -3,6 +3,9 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { INovel } from 'src/api/novels/novels.interface';
+import { IRate } from 'src/api/rates/rates.interface';
+import { novelCache } from 'src/config/memoryCache';
+import { cacheKey } from 'src/config/variables';
 
 function getRandomArbitrary(min:number, max:number):number {
   return Math.round(Math.random() * (max - min) + min);
@@ -11,12 +14,18 @@ function getRandomArbitrary(min:number, max:number):number {
 @Injectable()
 export class NovelsService {
   constructor(
-    @InjectModel('Novel') private readonly novelModel: Model<INovel>
+    @InjectModel('Novel') private readonly novelModel: Model<INovel>,
+    @InjectModel('Rate') private readonly rateModel: Model<IRate>
   ) {}
   //listar novela aleatoria
   public async getNovelRecomended(): Promise<INovel> {
     return await this.novelModel.countDocuments({activo: true}).then(async(count) => {
-      const random = Math.floor(Math.random() * count);
+      let random:number = await novelCache.get(cacheKey.novelaRecomendada)
+      if (!random) {
+        const aux:number = Math.floor(Math.random() * count);
+        await novelCache.set(cacheKey.novelaRecomendada, aux, {ttl: 86400});
+        random = aux;
+      }
       return this.novelModel.findOne().skip(random)
         .select('imagen_portada titulo slug tipo sinopsis categorias rating')
     })
@@ -25,10 +34,18 @@ export class NovelsService {
   public async getNewChapterNovels(): Promise<INovel[]> {
     return await this.novelModel
       .find({activo: true, estado: 'emision'})
-      .sort('-updatedAt')
       .limit(16)
-      .populate('capitulo_emision', 'numero slug')
-      .select('capitulo_emision imagen_miniatura titulo slug acron updatedAt')
+      .populate({
+        path: 'capitulo_emision', 
+        select: 'numero slug createdAt'
+      }).select('capitulo_emision imagen_miniatura titulo slug acron updatedAt').then((data) => {
+        if (data) {
+          const sortData = data.sort((a,b) => (a.capitulo_emision.createdAt > b.capitulo_emision.createdAt) ? -1 : ((b.capitulo_emision.createdAt > a.capitulo_emision.createdAt) ? 1 : 0))
+          return sortData;
+        } else {
+          return data;
+        }
+      })
   };
   //listar novelas ranking (global y semanal)
   public async getNovelRanking(global:boolean): Promise<INovel[]> {
@@ -44,10 +61,12 @@ export class NovelsService {
     } else {
       objQuery = { activo: true }
     }
-
-    return await this.novelModel.find(objQuery)
-      .sort('-rating.promedio')
-      .limit(5).select('imagen_portada titulo slug rating visitas')
+    return await this.novelModel.aggregate([
+      {$match: objQuery},
+      {$addFields: {"promedio": {$cond: [ { $eq: [ "$rating.valor", 0 ] }, 1, {"$divide":["$rating.valor", "$rating.contador"]}]}}},
+      {$sort:{"promedio":-1}},
+      {$limit : 5}
+    ])
   };
   //listar ultimas novelas agregadas
   public async getLastNovels(): Promise<INovel[]> {
@@ -82,11 +101,15 @@ export class NovelsService {
   };
   //obtener novela
   public async getNovel(slug: string): Promise<INovel> {
-    return await this.novelModel.findOne({slug}).then( async(data) => 
-      await this.novelModel.findByIdAndUpdate(data._id, { $inc: { visitas: 1 }})
+    return await this.novelModel.findOne({slug}).then( async(data) => {
+      if (data) {
+        return await this.novelModel.findByIdAndUpdate(data._id, { $inc: { visitas: 1 }})
         .select('imagen_portada titulo acron autor autor_usuario tipo estado titulo_alt rating sinopsis categorias capitulo_emision')
         .populate('capitulo_emision', 'titulo numero slug createdAt')
-    )
+      } else {
+        return null
+      }        
+    })
   };
   //obtener novelas relacionadas 
   public async getNovelRelated(slug: string): Promise<INovel[]> {
@@ -101,5 +124,17 @@ export class NovelsService {
         return null
       }
     })
-  }
+  };
+  //actualizar puntaje de la novela
+  public async updateRateNovel(idProvider: string, novela: string, valor: number): Promise<INovel> {
+    const ratedBefore = await this.rateModel.find({ usuario: idProvider, novela}).countDocuments();
+    if (!ratedBefore) {
+      const newRate = new this.rateModel({ usuario: idProvider, novela, valor });
+      await newRate.save();
+      return await this.novelModel.findByIdAndUpdate(
+        {_id: novela}, 
+        { $inc: { 'rating.contador': 1, 'rating.valor': valor }, 'rating.actualizado': new Date() 
+      })
+    } else { return null; };
+  };
 }

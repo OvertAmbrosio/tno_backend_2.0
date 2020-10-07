@@ -36,7 +36,6 @@ type ImageNovel {
 type RatingNovel {
   contador: Int
   valor: Int
-  promedio: Float
   actualizado: DateTime
 }
 
@@ -59,6 +58,7 @@ type NovelType {
   rating: RatingNovel!
   visitas: Int!
   updatedAt: DateTime!
+  promedio: Float!
 }
 
 type ImageType {
@@ -67,6 +67,22 @@ type ImageType {
   contentType: String!
   url: String!
   novela: NovelType!
+}
+
+type BibliotecaType {
+  novela: NovelType
+  capitulo: ChapterType
+}
+
+type UserType {
+  idProvider: String!
+  name: String!
+  email: String!
+  image: String!
+  username: String
+  estado: Int
+  tipo: String!
+  biblioteca: [BibliotecaType!]!
 }
 
 type Query {
@@ -84,4 +100,20 @@ type Query {
   findChapter(capitulo: String!, novela: String!): ChapterType!
   getNavChapter(next: Boolean!, numero: Float!, novela: String!): ChapterType!
   getImagesNovel(novela: String!): [ImageType!]!
+  findLibrary(todo: Boolean!, idProvider: String!): UserType!
+  findNovelInLibrary(idProvider: String!, novela: String!): UserType!
+}
+
+type Mutation {
+  updateRateNovel(valor: Float!, novela: String!, idProvider: String!): NovelType!
+  loginUser(userData: NewUserInput!): UserType!
+  addNovelLibrary(guardar: Boolean!, idProvider: String!, novela: String!): UserType!
+  saveChapterOnLibrary(idProvider: String!, capitulo: String!, novela: String!): UserType!
+}
+
+input NewUserInput {
+  idProvider: String!
+  name: String!
+  email: String!
+  image: String!
 }

@@ -4,7 +4,6 @@ import { IChapter } from '../chapters/chapters.interface';
 type TRating = {
   readonly contador: number,
   readonly valor: number,
-  readonly promedio: number,
   readonly actualizado: Date 
 }
 
