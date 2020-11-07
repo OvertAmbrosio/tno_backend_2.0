@@ -8,7 +8,7 @@ type TBiblioteca = {
 }
 
 export interface IUser extends Document{
-  readonly idProvider: string,
+  readonly _id: string,
   readonly name: string,
   readonly email: string,
   readonly image: string,

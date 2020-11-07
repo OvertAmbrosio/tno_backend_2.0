@@ -13,7 +13,7 @@ class BibliotecaType {
 @ObjectType()
 export class UserType {
   @Field()
-  readonly idProvider: string;
+  readonly _id: string;
   @Field()
   readonly name: string;
   @Field()
@@ -33,7 +33,7 @@ export class UserType {
 @InputType()
 export class NewUserInput {
   @Field()
-  idProvider: string;
+  _id: string;
   @Field()
   name: string;
   @Field()

@@ -13,22 +13,22 @@ export class UsersResolver {
   };
   //agregar novela a la libreria
   @Mutation(() => UserType)
-  async addNovelLibrary(@Args('novela') novela:string, @Args('idProvider') idProvider:string, @Args('guardar') guardar:boolean): Promise<UserType> {
-    return await this.usersService.addLibrary(novela, idProvider, guardar);
+  async addNovelLibrary(@Args('novela') novela:string, @Args('_id') _id:string, @Args('guardar') guardar:boolean): Promise<UserType> {
+    return await this.usersService.addLibrary(novela, _id, guardar);
   };
   //guardar ultimop capitulo leido
   @Mutation(() => UserType)
-  async saveChapterOnLibrary(@Args('novela') novela:string, @Args('capitulo') capitulo:string, @Args('idProvider') idProvider:string): Promise<UserType> {
-    return await this.usersService.saveChapterOnLibrary(novela, capitulo, idProvider);
+  async saveChapterOnLibrary(@Args('novela') novela:string, @Args('capitulo') capitulo:string, @Args('_id') _id:string): Promise<UserType> {
+    return await this.usersService.saveChapterOnLibrary(novela, capitulo, _id);
   };
   //buscar la biblioteca del usuario
   @Query(() => UserType)
-  async findLibrary(@Args('idProvider') idProvider:string, @Args('todo') todo:boolean): Promise<UserType> {
-    return await this.usersService.findLibrary(idProvider, todo);
+  async findLibrary(@Args('_id') _id:string, @Args('todo') todo:boolean): Promise<UserType> {
+    return await this.usersService.findLibrary(_id, todo);
   };
   //buscar novela en biblioteca
   @Query(() => UserType)
-  async findNovelInLibrary(@Args('novela') novela:string, @Args('idProvider') idProvider:string): Promise<UserType> {
-    return await this.usersService.findNovelInLibrary(novela, idProvider);
+  async findNovelInLibrary(@Args('novela') novela:string, @Args('_id') _id:string): Promise<UserType> {
+    return await this.usersService.findNovelInLibrary(novela, _id);
   };
 }

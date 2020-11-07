@@ -96,8 +96,8 @@ export class NovelsService {
     return novelas
   }
   //obtener novela buscada por el titulo
-  public async getNovelbyText(titulo: string): Promise<INovel> {
-    return await this.novelModel.findOne({titulo: { "$regex": titulo, "$options": "i" } })
+  public async getNovelbyText(titulo: string): Promise<INovel[]> {
+    return await this.novelModel.find({titulo: { "$regex": titulo, "$options": "i" } }).limit(5)
   };
   //obtener novela
   public async getNovel(slug: string): Promise<INovel> {

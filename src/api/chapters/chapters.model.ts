@@ -28,14 +28,19 @@ export const ChapterSchema = new Schema({
     type: String,
     default: '-'
   },
-  traductor: {
+  traductor_grupo: {
     type: Types.ObjectId,
     ref: 'Group',
     default: null,
   },
+  traductor_usuario: {
+    type: Types.ObjectId,
+    ref: 'User',
+    default: null
+  },
   editor: {
     type: Types.ObjectId,
-    ref: 'Group',
+    ref: 'User',
     default: null
   },
   nota: {

@@ -1,7 +1,7 @@
 import { Schema, Types } from 'mongoose';
 
 export const UserSchema = new Schema({
-  idProvider: {
+  _id: {
     type: String,
     required: true,
     unique: true,

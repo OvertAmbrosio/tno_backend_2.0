@@ -12,7 +12,7 @@ export class UsersService {
   ) {}
   // logear usuario, si es nuevo guardarlo, si existe devolverlo
   public async loginUser(user: NewUserInput): Promise<IUser> {
-    return await this.userModel.findOne({ idProvider: user.idProvider }).then(async(data) => {
+    return await this.userModel.findById({ _id: user._id }).then(async(data) => {
       if (data) {
         return data;
       } else {
@@ -23,10 +23,10 @@ export class UsersService {
     })
   };
   //guardar novela o eliminarla de la libreria
-  public async addLibrary(novela: string, idProvider: string, guardar: boolean): Promise<IUser> {
+  public async addLibrary(novela: string, _id: string, guardar: boolean): Promise<IUser> {
     if (guardar) {
       return await this.userModel.findOneAndUpdate({$and:[
-        {idProvider}, { "biblioteca.novela": { $ne: novela } }
+        {_id}, { "biblioteca.novela": { $ne: novela } }
       ]}, {
         $push: {
           biblioteca: { novela, capitulo: null }
@@ -34,7 +34,7 @@ export class UsersService {
       })
     } else {
       return await this.userModel.findOneAndUpdate({$and:[
-        {idProvider}, { "biblioteca.novela": novela }
+        {_id}, { "biblioteca.novela": novela }
       ]}, {
         $pull: {
           biblioteca: { novela }
@@ -43,16 +43,16 @@ export class UsersService {
     };
   };
   //guardar capitulo en biblioteca segun la novela
-  public async saveChapterOnLibrary(novela: string, capitulo: string, idProvider: string): Promise<IUser> {
-    return await this.userModel.findOneAndUpdate({ idProvider, 'biblioteca.novela': novela }, {
+  public async saveChapterOnLibrary(novela: string, capitulo: string, _id: string): Promise<IUser> {
+    return await this.userModel.findOneAndUpdate({ _id, 'biblioteca.novela': novela }, {
       $set: {
         "biblioteca.$.capitulo": capitulo
       }
     })
   };
   //traer toda la biblioteca del usuario
-  public async findLibrary(idProvider: string, todo: boolean): Promise<IUser> {
-    return await this.userModel.findOne({idProvider})
+  public async findLibrary(_id: string, todo: boolean): Promise<IUser> {
+    return await this.userModel.findOne({_id})
       .populate({
         path: 'biblioteca.novela',
         populate: {
@@ -69,8 +69,8 @@ export class UsersService {
       })
   }
   //buscar novela en la biblioteca del usuario
-  public async findNovelInLibrary(novela: string, idProvider: string): Promise<IUser> {
-    return await this.userModel.findOne({idProvider, biblioteca: { $elemMatch: { novela } }})
+  public async findNovelInLibrary(novela: string, _id: string): Promise<IUser> {
+    return await this.userModel.findOne({_id, biblioteca: { $elemMatch: { novela } }})
       .populate('biblioteca.novela', 'slug').populate('biblioteca.capitulo', 'titulo numero slug')
       .select('biblioteca idProvider')
   };

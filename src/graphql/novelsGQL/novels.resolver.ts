@@ -38,8 +38,8 @@ export class NovelsResolver {
     return await this.novelsService.getNovelCategory(limit, categoria, estado, tipo);
   };
   //consulta para buscar una novela por el titulo 
-  @Query(() => NovelType)
-  async findNovelTitle(@Args('titulo') titulo: string): Promise<NovelType> {
+  @Query(() => [NovelType])
+  async findNovelTitle(@Args('titulo') titulo: string): Promise<NovelType[]> {
     return await this.novelsService.getNovelbyText(titulo)
   };
   //obtener novela por el slug

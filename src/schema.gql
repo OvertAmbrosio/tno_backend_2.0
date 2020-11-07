@@ -75,7 +75,7 @@ type BibliotecaType {
 }
 
 type UserType {
-  idProvider: String!
+  _id: String!
   name: String!
   email: String!
   image: String!
@@ -92,7 +92,7 @@ type Query {
   getRankingListNovels(global: Boolean = false): [NovelType!]!
   getLastNovels: [NovelType!]!
   getListCategoryNovel(tipo: String = null, estado: String = "emision", categoria: String = null, limit: Int = 25): [NovelType!]!
-  findNovelTitle(titulo: String!): NovelType!
+  findNovelTitle(titulo: String!): [NovelType!]!
   findNovel(slug: String!): NovelType!
   getNovelRelated(slug: String!): [NovelType!]!
   getLastChapters(limit: Int = 16): [ChapterType!]!
@@ -100,19 +100,19 @@ type Query {
   findChapter(capitulo: String!, novela: String!): ChapterType!
   getNavChapter(next: Boolean!, numero: Float!, novela: String!): ChapterType!
   getImagesNovel(novela: String!): [ImageType!]!
-  findLibrary(todo: Boolean!, idProvider: String!): UserType!
-  findNovelInLibrary(idProvider: String!, novela: String!): UserType!
+  findLibrary(todo: Boolean!, _id: String!): UserType!
+  findNovelInLibrary(_id: String!, novela: String!): UserType!
 }
 
 type Mutation {
   updateRateNovel(valor: Float!, novela: String!, idProvider: String!): NovelType!
   loginUser(userData: NewUserInput!): UserType!
-  addNovelLibrary(guardar: Boolean!, idProvider: String!, novela: String!): UserType!
-  saveChapterOnLibrary(idProvider: String!, capitulo: String!, novela: String!): UserType!
+  addNovelLibrary(guardar: Boolean!, _id: String!, novela: String!): UserType!
+  saveChapterOnLibrary(_id: String!, capitulo: String!, novela: String!): UserType!
 }
 
 input NewUserInput {
-  idProvider: String!
+  _id: String!
   name: String!
   email: String!
   image: String!
